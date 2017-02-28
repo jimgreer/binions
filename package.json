@@ -13,7 +13,7 @@
     "hoyle": ">=0.2.1"
   },
   "devDependencies": {
-     "coffee-script" : "1.3.x"
+    "coffee-script": ">=1.4.0"
     ,"should" : ">=1.1.0"
     ,"mocha" : ">=1.4.2"
   },
