@@ -1,3 +1,4 @@
+//@formatter:off
 {
   "name": "binions",
   "version": "0.6.5",
@@ -16,6 +17,7 @@
     "coffee-script": ">=1.4.0"
     ,"should" : ">=1.1.0"
     ,"mocha" : ">=1.4.2"
+    ,"minimist" : "^1.2.0"
   },
   "main": "./lib/index.js",
   "engines": { "node": ">=0.8.x" },
