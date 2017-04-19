@@ -1,6 +1,7 @@
 assert = require 'assert'
 {Card} = require 'hoyle'
 {Player} = require '../src/player'
+omit = require 'object.omit'
 
 describe "Basic player", ->
   beforeEach ->
@@ -35,3 +36,17 @@ describe "Basic player", ->
       @player.state = 'folded'
       status = @player.status(Player.STATUS.FINAL)
       assert.equal undefined, status.cards
+
+  describe "serialization", ->
+    it "should be the same after serialization", ->
+      json = JSON.stringify(@player)
+      player2 = Player.fromJSON(JSON.parse(json))
+
+      # ignore bots and functions
+      omits = ['bot']
+
+      for k,v of @player
+        if typeof v == "function"
+          omits.push(k)
+
+      assert.deepEqual omit(player2, omits), omit(@player, omits)

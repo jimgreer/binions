@@ -9,7 +9,9 @@ Game = class exports.Game extends EventEmitter
     NORMAL: 0
     PRIVILEGED: 1
 
-  constructor: (players, betting, hand) ->
+  constructor: (players, betting, hand, @opts) ->
+    @opts ?= {}
+
     @hand = hand || 1
     @Betting = betting
     @players = players.filter (p) -> p.chips > 0
@@ -21,6 +23,22 @@ Game = class exports.Game extends EventEmitter
       player.position = i
     @state = null
     @reset()
+
+  @fromJSON: (obj, opts) ->
+    game = new Game(null, null, null, opts)
+    for k,v of obj
+      if k == "players"
+        game.players = []
+        for playerObj in v
+          player = Player.fromJSON(v)
+          game.players.push(player)
+      else if k == "deck"
+        game.deck = Deck.fromJSON(v)
+      else if k == "betting"
+        game.betting = NoLimit.fromJSON(v)
+      else
+        game[k] = v;
+    return game
 
   reset: ->
     for player in @players
@@ -42,6 +60,13 @@ Game = class exports.Game extends EventEmitter
       else
         @settle()
 
+  toJSON: () ->
+    obj = {}
+    for k,v of this
+      if typeof v != "function" || k == 'Betting'
+        obj[k] = v
+    obj
+
   # Take bets in order and call roundComplete when finished
   takeBets: (betting, cb) ->
     betting ||= new @Betting(@players, @state)
@@ -52,7 +77,8 @@ Game = class exports.Game extends EventEmitter
         if err
           @emit("bettingError", err, betting.nextToAct)
         betting.bet(res || 0, null, err)
-        @takeBets(betting)
+        if !@opts.async
+          @takeBets(betting)
     else
       @emit("roundComplete", @state)
       cb?()

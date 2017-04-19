@@ -119,3 +119,16 @@ Player = class exports.Player extends EventEmitter
         s.hand = @hand.cards.map (c) -> c.toString()
     s
 
+  @fromJSON: (obj) ->
+    player = new Player()
+    for k,v of obj
+      player[k] = v
+    player
+
+  toJSON: () ->
+    obj = {}
+    for k,v of this
+      # omit bots and functions
+      if typeof v != "function" || k == 'bot'
+        obj[k] = v
+    obj

@@ -1,4 +1,5 @@
 assert = require 'assert'
+omit = require 'object.omit'
 util = require 'util'
 {Game} = require '../src/game'
 {Card} = require 'hoyle'
@@ -238,3 +239,16 @@ describe "Basic game", ->
       ]
       test = -> new Game(players, @noLimit)
       assert.throws(test, /Not enough players/)
+
+  describe "serialization", ->
+    it "should be the same after serialization", ->
+      players = []
+      for n in [0..2]
+        players.push new Player({}, 100, n)
+
+      game = new Game(players, @noLimit)
+      json = JSON.stringify(game)
+      game2 = JSON.parse(json)
+
+      omits = ['Betting']
+      assert.deepEqual omit(game2, omits), omit(game, omits)
