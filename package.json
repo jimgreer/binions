@@ -1,9 +1,14 @@
-//@formatter:off
 {
   "name": "binions",
   "version": "0.6.5",
   "description": "A Javascript Poker game engine",
-  "keywords": ["poker tournament", "pokerbot", "poker", "poker engine", "texas hold'em"],
+  "keywords": [
+    "poker tournament",
+    "pokerbot",
+    "poker",
+    "poker engine",
+    "texas hold'em"
+  ],
   "repository": "git://github.com/mdp/binions.git",
   "author": "Mark Percival <mark@markpercival.us> (http://markpercival.us)",
   "scripts": {
@@ -11,15 +16,18 @@
     "XXprepublish": "rm -rf lib && coffee --compile -o lib/ src/"
   },
   "dependencies": {
-    "hoyle": ">=0.2.1"
+    "hoyle": ">=0.2.1",
+    "object.omit": "^2.0.1"
   },
   "devDependencies": {
-    "coffee-script": ">=1.4.0"
-    ,"should" : ">=1.1.0"
-    ,"mocha" : ">=1.4.2"
-    ,"minimist" : "^1.2.0"
+    "coffee-script": ">=1.4.0",
+    "should": ">=1.1.0",
+    "mocha": ">=1.4.2",
+    "minimist": "^1.2.0"
   },
   "main": "./lib/index.js",
-  "engines": { "node": ">=0.8.x" },
+  "engines": {
+    "node": ">=0.8.x"
+  },
   "license": "MIT"
 }

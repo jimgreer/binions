@@ -8,7 +8,6 @@ smartBot = require './players/smart_bot'
 
 Minimist = require 'minimist'
 
-
 noLimit = new NoLimit(10,20)
 players = []
 chips = 1000
@@ -17,7 +16,6 @@ players.push new Player(randBot(), chips, "Jim")
 players.push new Player(smartBot(), chips, "Sam")
 
 argv = Minimist(process.argv)
-
 
 run = (game) ->
   game.run()
@@ -28,5 +26,5 @@ run = (game) ->
 
 game = new Game(players, noLimit, 1, {async: true})
 str = JSON.stringify(game)
-game2 = Game.fromJSON(JSON.parse(str), {async: true})
+game2 = Game.fromJSON(JSON.parse(str))
 run(game2)
