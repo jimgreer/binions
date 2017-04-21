@@ -16,8 +16,9 @@
     "XXprepublish": "rm -rf lib && coffee --compile -o lib/ src/"
   },
   "dependencies": {
-    "hoyle": ">=0.2.1",
-    "object.omit": "^2.0.1"
+    "hoyle": "../hoyle",
+    "object.omit": "^2.0.1",
+    "readline-sync": "^1.4.7"
   },
   "devDependencies": {
     "coffee-script": ">=1.4.0",
