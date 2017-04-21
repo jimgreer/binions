@@ -12,7 +12,7 @@
   "repository": "git://github.com/mdp/binions.git",
   "author": "Mark Percival <mark@markpercival.us> (http://markpercival.us)",
   "scripts": {
-    "test": "mocha --no-colors --compilers coffee:coffee-script test/*_test.coffee",
+    "test": "mocha --no-colors --compilers coffee:coffee-script/register test/*_test.coffee",
     "XXprepublish": "rm -rf lib && coffee --compile -o lib/ src/"
   },
   "dependencies": {
