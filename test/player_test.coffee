@@ -40,7 +40,7 @@ describe "Basic player", ->
   describe "serialization", ->
     it "should be the same after serialization", ->
       json = JSON.stringify(@player)
-      player2 = Player.fromJSON(JSON.parse(json))
+      player2 = JSON.parse(json)
 
       # ignore bots and functions
       omits = ['bot']

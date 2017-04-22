@@ -6,7 +6,7 @@
 #
 # The player is passed in and will be delt with according
 # to the API
-{Hand} = require "hoyle"
+{Hand, Card} = require "hoyle"
 {EventEmitter} = require 'events'
 Player = class exports.Player extends EventEmitter
   @STATUS =
@@ -19,6 +19,16 @@ Player = class exports.Player extends EventEmitter
     @chips = chips
     @name = name
     @reset()
+
+  load: (obj) ->
+    for k, v of obj
+      if k == 'cards'
+        @cards = []
+        for card, i in v
+          @cards.push(Card.fromJSON(card))
+      else
+        if k != 'bot' && k != 'hand'
+          this[k] = v
 
   reset: ->
     @wagered = 0
@@ -118,12 +128,6 @@ Player = class exports.Player extends EventEmitter
         s.handName = @hand.name
         s.hand = @hand.cards.map (c) -> c.toString()
     s
-
-  @fromJSON: (obj) ->
-    player = new Player()
-    for k,v of obj
-      player[k] = v
-    player
 
   toJSON: () ->
     obj = {}

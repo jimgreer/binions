@@ -1,5 +1,4 @@
 {Game} = require '../src/game'
-{Card} = require 'hoyle'
 {Player} = require '../src/player'
 NoLimit = require '../src/betting/no_limit'
 
@@ -22,9 +21,15 @@ run = (game) ->
   game.on 'roundComplete', ->
     console.log "round complete"
   game.on 'complete', (status) ->
-    numPlayer = (players.filter (p) -> p.chips > 0).length
+    console.log players.map (p) -> "Name: #{p.name} - $#{p.chips}"
 
-game = new Game(players, noLimit, 1, {async: true})
-str = JSON.stringify(game)
-game2 = Game.fromJSON(JSON.parse(str))
+
+#game = new Game(players, noLimit, 1, {async: true})
+game = new Game(players, noLimit)
+str = JSON.stringify(game, null, 4)
+#console.log(str)
+game2 = new Game(players, noLimit)
+game2.load(JSON.parse(str))
+game2.players[0].bot = randBot()
+game2.players[1].bot = smartBot()
 run(game2)

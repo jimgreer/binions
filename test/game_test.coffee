@@ -252,3 +252,26 @@ describe "Basic game", ->
 
       omits = ['Betting']
       assert.deepEqual omit(game2, omits), omit(game, omits)
+
+    it "should be able to load state from json", ->
+
+      game = new Game([new Player({}, 100, 0), new Player({}, 100, 1)], @noLimit)
+      game2 = new Game([new Player({}, 100, 0), new Player({}, 100, 1)], @noLimit)
+
+      game.community = ['As','Ah','9c'].map (c) -> new Card(c)
+
+      game.players[0].cards = ['Ac','Kh'].map (c) -> new Card(c)
+      game.players[1].cards = ['Ad','Kh'].map (c) -> new Card(c)
+
+      for player in game.players
+        player.bet 50
+
+      json = JSON.stringify(game, null, 4)
+      game2.load(JSON.parse(json))
+
+      playerOmits = ['bot', 'hand']
+      assert.deepEqual(omit(game.players[0], playerOmits), omit(game2.players[0], playerOmits))
+      assert.deepEqual(omit(game.players[1], playerOmits), omit(game2.players[1], playerOmits))
+
+      gameOmits = ['players', 'Betting']
+      assert.deepEqual(omit(game, gameOmits), omit(game2, gameOmits))

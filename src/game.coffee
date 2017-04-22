@@ -24,22 +24,6 @@ Game = class exports.Game extends EventEmitter
     @state = null
     @reset()
 
-  @fromJSON: (obj, opts) ->
-    game = new Game(null, null, null, opts)
-    for k,v of obj
-      if k == "players"
-        game.players = []
-        for playerObj in v
-          player = Player.fromJSON(v)
-          game.players.push(player)
-      else if k == "deck"
-        game.deck = Deck.fromJSON(v)
-      else if k == "betting"
-        game.betting = NoLimit.fromJSON(v)
-      else
-        game[k] = v;
-    return game
-
   reset: ->
     for player in @players
       player.reset()
@@ -63,9 +47,27 @@ Game = class exports.Game extends EventEmitter
   toJSON: () ->
     obj = {}
     for k,v of this
-      if typeof v != "function" || k == 'Betting'
+      if typeof v != "function" && k != 'Betting'
         obj[k] = v
     obj
+
+  # load state from object
+  load: (obj) ->
+    obj
+    for k, v of obj
+      if k == 'players'
+        @players = []
+        for playerObj, i in v
+          player = new Player({}, -1, null)
+          player.load(playerObj)
+          @players.push(player)
+      else
+        if k == 'deck'
+          @deck = Deck.fromJSON(v)
+        else
+          if typeof v != "function" && k != 'Betting'
+            this[k] = v
+
 
   # Take bets in order and call roundComplete when finished
   takeBets: (betting, cb) ->
